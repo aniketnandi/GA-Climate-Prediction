@@ -14,8 +14,8 @@ def evaluate_chromosome(chrom: Chromosome, series: np.ndarray,
     try:
         model = chrom.build_model()
         rmse = model.walk_forward_rmse(series, test_size)
-        if not np.isfinite(rmse) or rmse <= 0:
-            rmse = 1e6
+        if not np.isfinite(rmse) or rmse <= 0 or rmse > 1e4:
+            rmse = 1e4
     except Exception:
         rmse = 1e6
     return chrom.compute_fitness(rmse)

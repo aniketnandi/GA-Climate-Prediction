@@ -32,7 +32,7 @@ def type_aware_crossover(parent1: Chromosome, parent2: Chromosome,
     c1.fitness = c1.rmse = None
     c2.fitness = c2.rmse = None
 
-    if random.random() > cx_prob:
+    if random.random() < cx_prob:
         from .chromosome import SEARCH_SPACES, MODEL_TYPES
         c1.model_type = parent2.model_type
         c1.hparams = {k: random.choice(v)
