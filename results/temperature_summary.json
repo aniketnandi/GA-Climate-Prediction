@@ -1,0 +1,39 @@
+{
+  "indicator": "temperature",
+  "region": "global",
+  "series_len": 1755,
+  "test_size": 24,
+  "best_ga": {
+    "model_type": "ARIMA",
+    "rmse": 0.07621253238687233,
+    "hparams": {
+      "p": 1,
+      "d": 0,
+      "q": 3,
+      "P": 1,
+      "D": 0,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "best_rs": {
+    "model_type": "ARIMA",
+    "rmse": 0.07513427927612866,
+    "hparams": {
+      "p": 2,
+      "d": 0,
+      "q": 1,
+      "P": 1,
+      "D": 0,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "comparison": {
+    "Default LR": 0.13241594312521823,
+    "Default ARIMA": 0.15602188065743502,
+    "Default LSTM": 0.30798567594321685,
+    "GA": 0.07621253238687233,
+    "Random Search": 0.07513427927612866
+  }
+}

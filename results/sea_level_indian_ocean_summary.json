@@ -1,0 +1,39 @@
+{
+  "indicator": "sea_level",
+  "region": "indian_ocean",
+  "series_len": 372,
+  "test_size": 24,
+  "best_ga": {
+    "model_type": "ARIMA",
+    "rmse": 2.3163691239755746,
+    "hparams": {
+      "p": 2,
+      "d": 0,
+      "q": 2,
+      "P": 0,
+      "D": 1,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "best_rs": {
+    "model_type": "ARIMA",
+    "rmse": 2.2337609535807146,
+    "hparams": {
+      "p": 3,
+      "d": 0,
+      "q": 0,
+      "P": 1,
+      "D": 1,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "comparison": {
+    "Default LR": 2.7359618776763166,
+    "Default ARIMA": 6.55815533833913,
+    "Default LSTM": 4.972352862916946,
+    "GA": 2.3163691239755746,
+    "Random Search": 2.2337609535807146
+  }
+}

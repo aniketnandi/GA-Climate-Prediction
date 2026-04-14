@@ -1,0 +1,39 @@
+{
+  "indicator": "sea_level",
+  "region": "arabian_sea",
+  "series_len": 372,
+  "test_size": 24,
+  "best_ga": {
+    "model_type": "ARIMA",
+    "rmse": 2.147873130583422,
+    "hparams": {
+      "p": 3,
+      "d": 0,
+      "q": 1,
+      "P": 0,
+      "D": 1,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "best_rs": {
+    "model_type": "ARIMA",
+    "rmse": 1.9755693101566305,
+    "hparams": {
+      "p": 2,
+      "d": 0,
+      "q": 1,
+      "P": 1,
+      "D": 0,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "comparison": {
+    "Default LR": 2.553564419164509,
+    "Default ARIMA": 6.120873610574055,
+    "Default LSTM": 4.375221318487762,
+    "GA": 2.147873130583422,
+    "Random Search": 1.9755693101566305
+  }
+}

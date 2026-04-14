@@ -1,0 +1,35 @@
+{
+  "indicator": "co2",
+  "region": "global",
+  "series_len": 816,
+  "test_size": 24,
+  "best_ga": {
+    "model_type": "ARIMA",
+    "rmse": 0.3163250610644003,
+    "hparams": {
+      "p": 1,
+      "d": 0,
+      "q": 1,
+      "P": 1,
+      "D": 0,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "best_rs": {
+    "model_type": "LR",
+    "rmse": 0.2974215738247195,
+    "hparams": {
+      "look_back": 36,
+      "alpha": 0.01,
+      "diff_order": 0
+    }
+  },
+  "comparison": {
+    "Default LR": 0.7792069437024189,
+    "Default ARIMA": 2.557134613371857,
+    "Default LSTM": 10.264973514338436,
+    "GA": 0.3163250610644003,
+    "Random Search": 0.2974215738247195
+  }
+}

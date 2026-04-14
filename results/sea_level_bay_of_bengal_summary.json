@@ -1,0 +1,39 @@
+{
+  "indicator": "sea_level",
+  "region": "bay_of_bengal",
+  "series_len": 372,
+  "test_size": 24,
+  "best_ga": {
+    "model_type": "ARIMA",
+    "rmse": 2.2471401983724006,
+    "hparams": {
+      "p": 2,
+      "d": 0,
+      "q": 1,
+      "P": 2,
+      "D": 0,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "best_rs": {
+    "model_type": "ARIMA",
+    "rmse": 2.3273489594276,
+    "hparams": {
+      "p": 2,
+      "d": 0,
+      "q": 1,
+      "P": 1,
+      "D": 0,
+      "Q": 1,
+      "s": 12
+    }
+  },
+  "comparison": {
+    "Default LR": 2.918359336188054,
+    "Default ARIMA": 6.995372621117821,
+    "Default LSTM": 5.402295143394462,
+    "GA": 2.2471401983724006,
+    "Random Search": 2.3273489594276
+  }
+}

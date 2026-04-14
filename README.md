@@ -1,4 +1,4 @@
-# Multi-Model Climate Forecasting with Genetic Algorithm-Based Model Selection
+# Multi-Model Climate Forecasting with Genetic Algorithm-Based Model Selection and Hyperparameter Optimization
 
 **CS5100 - Foundations of Artificial Intelligence**
 Aniket Nandi, Akshay Ashok Bannatti
@@ -7,7 +7,7 @@ Aniket Nandi, Akshay Ashok Bannatti
 This project applies a Genetic Algorithm (GA) to jointly select and tune forecasting models for three climate indicators:
 - **Global surface temperature anomaly** (NASA GISS)
 - **Atmospheric CO2 concentration** (NOAA Mauna Loa)
-- **Mean seal level change** (Satellite altimetry - global + Indian Ocean sub-regions)
+- **Mean sea level change** (CSIRO/NOAA global + Indian Ocean sub-regions)
 
 Each GA chromosome encodes a complete modelling pipeline (model type + hyperparameters).
 The GA evolves optimal configurations through tournament selection, type-aware crossover, and parametric/structural mutation.
@@ -45,7 +45,10 @@ python main.py --indicator temperature --pop 10 --gens 10 --seed 42
 # 3. Run all indicators
 python main.py --all --pop 10 --gens 10
 
-# 4. Or open the notebook
+# 4. Fast run
+python main.py --all --pop 2 -- gens 2
+
+# 5. Or open the notebook
 jupyter notebook notebooks/climate_forecasting_ga.ipynb
 ```
 

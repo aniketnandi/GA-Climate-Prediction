@@ -1,0 +1,232 @@
+{
+  "temperature": {
+    "indicator": "temperature",
+    "region": "global",
+    "series_len": 1755,
+    "test_size": 24,
+    "best_ga": {
+      "model_type": "ARIMA",
+      "rmse": 0.07621253238687233,
+      "hparams": {
+        "p": 1,
+        "d": 0,
+        "q": 3,
+        "P": 1,
+        "D": 0,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "best_rs": {
+      "model_type": "ARIMA",
+      "rmse": 0.07513427927612866,
+      "hparams": {
+        "p": 2,
+        "d": 0,
+        "q": 1,
+        "P": 1,
+        "D": 0,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "comparison": {
+      "Default LR": 0.13241594312521823,
+      "Default ARIMA": 0.15602188065743502,
+      "Default LSTM": 0.30798567594321685,
+      "GA": 0.07621253238687233,
+      "Random Search": 0.07513427927612866
+    }
+  },
+  "co2": {
+    "indicator": "co2",
+    "region": "global",
+    "series_len": 816,
+    "test_size": 24,
+    "best_ga": {
+      "model_type": "ARIMA",
+      "rmse": 0.3163250610644003,
+      "hparams": {
+        "p": 1,
+        "d": 0,
+        "q": 1,
+        "P": 1,
+        "D": 0,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "best_rs": {
+      "model_type": "LR",
+      "rmse": 0.2974215738247195,
+      "hparams": {
+        "look_back": 36,
+        "alpha": 0.01,
+        "diff_order": 0
+      }
+    },
+    "comparison": {
+      "Default LR": 0.7792069437024189,
+      "Default ARIMA": 2.557134613371857,
+      "Default LSTM": 10.264973514338436,
+      "GA": 0.3163250610644003,
+      "Random Search": 0.2974215738247195
+    }
+  },
+  "sea_level_global": {
+    "indicator": "sea_level",
+    "region": "global",
+    "series_len": 372,
+    "test_size": 24,
+    "best_ga": {
+      "model_type": "ARIMA",
+      "rmse": 2.193370683805993,
+      "hparams": {
+        "p": 1,
+        "d": 0,
+        "q": 3,
+        "P": 0,
+        "D": 1,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "best_rs": {
+      "model_type": "ARIMA",
+      "rmse": 1.9837722100136286,
+      "hparams": {
+        "p": 2,
+        "d": 0,
+        "q": 1,
+        "P": 1,
+        "D": 0,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "comparison": {
+      "Default LR": 2.605677978739324,
+      "Default ARIMA": 6.245803504594587,
+      "Default LSTM": 5.054883649789436,
+      "GA": 2.193370683805993,
+      "Random Search": 1.9837722100136286
+    }
+  },
+  "sea_level_indian_ocean": {
+    "indicator": "sea_level",
+    "region": "indian_ocean",
+    "series_len": 372,
+    "test_size": 24,
+    "best_ga": {
+      "model_type": "ARIMA",
+      "rmse": 2.3163691239755746,
+      "hparams": {
+        "p": 2,
+        "d": 0,
+        "q": 2,
+        "P": 0,
+        "D": 1,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "best_rs": {
+      "model_type": "ARIMA",
+      "rmse": 2.2337609535807146,
+      "hparams": {
+        "p": 3,
+        "d": 0,
+        "q": 0,
+        "P": 1,
+        "D": 1,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "comparison": {
+      "Default LR": 2.7359618776763166,
+      "Default ARIMA": 6.55815533833913,
+      "Default LSTM": 4.972352862916946,
+      "GA": 2.3163691239755746,
+      "Random Search": 2.2337609535807146
+    }
+  },
+  "sea_level_bay_of_bengal": {
+    "indicator": "sea_level",
+    "region": "bay_of_bengal",
+    "series_len": 372,
+    "test_size": 24,
+    "best_ga": {
+      "model_type": "ARIMA",
+      "rmse": 2.2471401983724006,
+      "hparams": {
+        "p": 2,
+        "d": 0,
+        "q": 1,
+        "P": 2,
+        "D": 0,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "best_rs": {
+      "model_type": "ARIMA",
+      "rmse": 2.3273489594276,
+      "hparams": {
+        "p": 2,
+        "d": 0,
+        "q": 1,
+        "P": 1,
+        "D": 0,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "comparison": {
+      "Default LR": 2.918359336188054,
+      "Default ARIMA": 6.995372621117821,
+      "Default LSTM": 5.402295143394462,
+      "GA": 2.2471401983724006,
+      "Random Search": 2.3273489594276
+    }
+  },
+  "sea_level_arabian_sea": {
+    "indicator": "sea_level",
+    "region": "arabian_sea",
+    "series_len": 372,
+    "test_size": 24,
+    "best_ga": {
+      "model_type": "ARIMA",
+      "rmse": 2.147873130583422,
+      "hparams": {
+        "p": 3,
+        "d": 0,
+        "q": 1,
+        "P": 0,
+        "D": 1,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "best_rs": {
+      "model_type": "ARIMA",
+      "rmse": 1.9755693101566305,
+      "hparams": {
+        "p": 2,
+        "d": 0,
+        "q": 1,
+        "P": 1,
+        "D": 0,
+        "Q": 1,
+        "s": 12
+      }
+    },
+    "comparison": {
+      "Default LR": 2.553564419164509,
+      "Default ARIMA": 6.120873610574055,
+      "Default LSTM": 4.375221318487762,
+      "GA": 2.147873130583422,
+      "Random Search": 1.9755693101566305
+    }
+  }
+}

@@ -146,7 +146,7 @@ def load_sea_level(source: str = "url", region: str = "global") -> pd.DataFrame:
 
 def _fetch_sea_level_global() -> pd.DataFrame:
     r = _get(
-        "https://raw.githubusercontent.com/datasets/sea-level/main/data/epa-sea-level.csv",
+        "https://raw.githubusercontent.com/datasets/sea-level-rise/main/data/epa-sea-level.csv",
         timeout=15
     )
     df = pd.read_csv(io.StringIO(r.text))
