@@ -12,6 +12,32 @@ This project applies a Genetic Algorithm (GA) to jointly select and tune forecas
 Each GA chromosome encodes a complete modelling pipeline (model type + hyperparameters).
 The GA evolves optimal configurations through tournament selection, type-aware crossover, and parametric/structural mutation.
 ---
+## Results
+
+Both GA and random search cut RMSE by **24–75%** compared to untuned default models, across all six series.
+
+| Indicator | GA RMSE | Random Search RMSE | Best Default RMSE |
+|---|---|---|---|
+| Temperature | 0.0762 | 0.0751 | 0.1324 |
+| CO2 | 0.3163 | 0.2974 | 0.7792 |
+| Sea Level (Global) | 2.1934 | 1.9838 | 2.6057 |
+| Sea Level (Indian Ocean) | 2.3164 | 2.2338 | 2.7360 |
+| Sea Level (Bay of Bengal) | 2.2471 | 2.3273 | 2.9184 |
+| Sea Level (Arabian Sea) | 2.1479 | 1.9756 | 2.5536 |
+
+**Key findings**
+- **Automated search beats manual defaults by a wide margin.** Hyperparameter choice has a large effect on forecast accuracy.
+- **Seasonal ARIMA dominates.** Both search strategies converged on seasonal ARIMA for every series. LSTMs were penalized for complexity and struggled with only a few hundred monthly observations.
+- **Random search matched the GA at this budget.** With 100 evaluations (pop = 10, gens = 10), random search won on 5 of 6 series, by margins of 1.4–9.6%. The GA's advantage is expected to appear at larger budgets.
+
+![Strategy comparison](images/temperature_comparison.png)
+![GA convergence](images/temperature_fitness.png)
+![2025–2050 projection](images/temperature_projection.png)
+
+> Projections are illustrative outputs of the statistical pipeline, not physical climate forecasts.
+
+📄 Full write-up: [Final Paper](Aniket_Akshay_Final_Paper.pdf)
+---
 ## Project Structure
 ```aiignore
 GA Climate Prediction Project/
@@ -46,7 +72,7 @@ python main.py --indicator temperature --pop 10 --gens 10 --seed 42
 python main.py --all --pop 10 --gens 10
 
 # 4. Fast run
-python main.py --all --pop 2 -- gens 2
+python main.py --all --pop 2 --gens 2
 
 # 5. Or open the notebook
 jupyter notebook notebooks/climate_forecasting_ga.ipynb
@@ -73,7 +99,7 @@ Component -> Detail
 
 **Chromosome** -> model_type {LR, ARIMA, LSTM} + full hparam dict
 
-**Fitness** -> `1 / RMSE + complexity_penalty)` - higher is better
+**Fitness** -> `1 / (RMSE + complexity_penalty)` - higher is better
 
 **Selection** -> Tournament selection (k = 3)
 
@@ -91,4 +117,3 @@ Component -> Detail
 - `{indicator}_forecast.png` - actual vs predicted on the test set
 - `{indicator}_projection.png` - 2025 – 2050 forecast with 95% CI
 - `{indicator}_summary.json` - best hyperparameters and all RMSE values
-- `ablation.png` - sensitivity to pop size, mutation rate, crossover rate
