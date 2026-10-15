@@ -49,20 +49,28 @@ COMPLEXITY_WEIGHT = {
     "LSTM": 0.005,
 }
 
+
 def _complexity_score(model_type: str, hparams: Dict[str, Any]) -> float:
     if model_type == "LR":
         return hparams.get("look_back", 12) * (1 + hparams.get("diff_order", 0))
     if model_type == "ARIMA":
-        return (hparams.get("p", 1) + hparams.get("q", 0) +
-                hparams.get("P", 0) + hparams.get("Q", 0))
+        return (
+            hparams.get("p", 1)
+            + hparams.get("q", 0)
+            + hparams.get("P", 0)
+            + hparams.get("Q", 0)
+        )
     if model_type == "LSTM":
-        return (hparams.get("n_layers", 1) *
-                hparams.get("units", 64) *
-                hparams.get("look_back", 12))
+        return (
+            hparams.get("n_layers", 1)
+            * hparams.get("units", 64)
+            * hparams.get("look_back", 12)
+        )
     return 0.0
 
 
 # Chromosome
+
 
 @dataclass
 class Chromosome:
@@ -83,8 +91,9 @@ class Chromosome:
     # Fitness
 
     def compute_fitness(self, rmse: float) -> float:
-        penalty = (COMPLEXITY_WEIGHT[self.model_type] *
-                   _complexity_score(self.model_type, self.hparams))
+        penalty = COMPLEXITY_WEIGHT[self.model_type] * _complexity_score(
+            self.model_type, self.hparams
+        )
         self.rmse = rmse
         self.fitness = 1.0 / (rmse + penalty + 1e-9)
         return self.fitness
@@ -127,5 +136,7 @@ class Chromosome:
 
     def __repr__(self):
         fitness_str = f"{self.fitness:.6f}" if self.fitness is not None else "None"
-        return (f"Chromosome(type = {self.model_type}, "
-                f"fitness = {fitness_str}, hparams = {self.hparams})")
+        return (
+            f"Chromosome(type = {self.model_type}, "
+            f"fitness = {fitness_str}, hparams = {self.hparams})"
+        )
