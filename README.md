@@ -3,6 +3,7 @@
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
 ![statsmodels](https://img.shields.io/badge/statsmodels-SARIMA-informational)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-LSTM-orange)
+[![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 A genetic algorithm that **jointly chooses the model family and tunes its hyperparameters** for climate time-series forecasting. Each run compares the GA against untuned defaults and an equal-budget random search.
 
@@ -142,3 +143,7 @@ Each run writes the following to `results/`:
 ├── results/                     # Figures + JSON summaries from the reported run
 └── Aniket_Akshay_Final_Paper.pdf
 ```
+
+## License
+
+Code is released under the [MIT License](LICENSE). The paper PDF and the downloaded datasets remain under their own terms.
