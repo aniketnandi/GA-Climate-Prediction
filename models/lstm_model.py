@@ -10,7 +10,8 @@ try:
     tf.get_logger().setLevel("ERROR")
     _TF_AVAILABLE = True
 except ImportError:
-    pass
+    print("[models] TensorFlow not installed: LSTM candidates use a ridge-regression surrogate "
+          "(pip install -r requirements-full.txt for real LSTMs)")
 
 
 def _rmse(y_true, y_pred):

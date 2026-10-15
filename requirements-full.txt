@@ -1,0 +1,7 @@
+# Everything in requirements.txt plus the optional extras:
+# TensorFlow for real LSTM candidates, Jupyter for the notebook,
+# pmdarima for the auto-ARIMA helper in models/statistical.py.
+-r requirements.txt
+tensorflow>=2.13
+jupyter>=1.0
+pmdarima>=2.0
