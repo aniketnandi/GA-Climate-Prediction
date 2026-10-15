@@ -2,6 +2,7 @@ import io
 import numpy as np
 import pandas as pd
 import requests
+import warnings
 
 # Remote URLs (public, no auth required)
 
@@ -12,6 +13,14 @@ SEA_LEVEL_ALT_URL = (
     "https://podaac-tools.jpl.nasa.gov/drive/files/allData/merged_alt/"
     "L2/TP_J1_OSTM/global_mean_GMSL_TPJAOS_5.1_199209_202311.txt"
 )
+
+def _warn_synthetic(name: str, err: Exception) -> None:
+    warnings.warn(
+        f"Could not load real {name} data ({err.__class__.__name__}); "
+        f"falling back to a SYNTHETIC series.",
+        stacklevel = 3,
+    )
+    print(f"[data] WARNING: using synthetic {name} data")
 
 def _get(url: str, **kwargs) -> requests.Response:
     r = requests.get(url, timeout = 30, **kwargs)
@@ -27,7 +36,8 @@ def load_temperature(source: str = "url") -> pd.DataFrame:
     else:
         try:
             raw = _get(GISTEMP_URL).text
-        except Exception:
+        except Exception as e:
+            _warn_synthetic("temperature", e)
             return _synthetic_temperature()
 
     lines = [l for l in raw.splitlines() if not l.startswith("Year") is False
@@ -78,7 +88,8 @@ def load_co2(source: str = "url") -> pd.DataFrame:
     else:
         try:
             raw = _get(CO2_URL).text
-        except Exception:
+        except Exception as e:
+            _warn_synthetic("CO2", e)
             return _synthetic_co2()
 
     records = []
@@ -124,9 +135,12 @@ def load_sea_level(source: str = "url", region: str = "global") -> pd.DataFrame:
     else:
         try:
             df = _fetch_sea_level_global()
-        except Exception:
+        except Exception as e:
+            _warn_synthetic("sea level", e)
             df = _synthetic_sea_level()
 
+    # Regional series are approximated by scaling and offsetting the global
+    # series; they are not independent regional observations.
     if region != "global":
         offsets = {
             "indian_ocean": 2.1,

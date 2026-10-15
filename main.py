@@ -30,18 +30,21 @@ plot_forecast, plot_comparison, plot_projections
 
 INDICATORS = {
     "temperature": {
+        "title": "Temperature",
         "loader": load_temperature,
         "value_col": "anomaly",
         "ylabel": "Temperature Anomaly (C)",
         "test_frac": 0.15,
     },
     "co2": {
+        "title": "CO2",
         "loader": load_co2,
         "value_col": "co2_ppm",
         "ylabel": "CO2 Concentration (ppm)",
         "test_frac": 0.15,
     },
     "sea_level": {
+        "title": "Sea Level",
         "loader": load_sea_level,
         "value_col": "sea_level_mm",
         "ylabel": "Sea Level Change (mm)",
@@ -111,6 +114,7 @@ def run_indicator(indicator: str, pop_size: int, n_generations: int, seed: int, 
     dates = df["date"].values
     test_size = 24
     tag = f"{indicator}_{region}" if indicator == "sea_level" else indicator
+    name = cfg["title"] + (f" ({region.replace('_', ' ').title()})" if indicator == "sea_level" else "")
 
     print(f"Series length: {len(series)}")
     print(f"Test size: {test_size}")
@@ -149,16 +153,16 @@ def run_indicator(indicator: str, pop_size: int, n_generations: int, seed: int, 
         periods = n_proj, freq = "MS"
     )
 
-    plot_fitness_curve(ga_log, title = f"{indicator.capitalize()} - GA Convergence", save_path = f"{RESULTS_DIR}/{tag}_fitness.png")
-    plot_type_diversity(ga_log, title = f"{indicator.capitalize()} - Population Diversity", save_path = f"{RESULTS_DIR}/{tag}_diversity.png")
-    plot_comparison(comparison, title = f"{indicator.capitalize()} - Strategy Comparison", save_path = f"{RESULTS_DIR}/{tag}_comparison.png")
+    plot_fitness_curve(ga_log, title = f"{name} - GA Convergence", save_path = f"{RESULTS_DIR}/{tag}_fitness.png")
+    plot_type_diversity(ga_log, title = f"{name} - Population Diversity", save_path = f"{RESULTS_DIR}/{tag}_diversity.png")
+    plot_comparison(comparison, title = f"{name} - Strategy Comparison", save_path = f"{RESULTS_DIR}/{tag}_comparison.png")
     plot_projections(
         historical_dates = dates,
         historical_values = series,
         future_dates = future_dates,
         future_values = proj,
         ci_lower = ci_lo, ci_upper = ci_hi,
-        title = f"{indicator.capitalize()} Projection 2025 - 2050",
+        title = f"{name} Projection 2025 - 2050",
         ylabel = cfg["ylabel"],
         save_path = f"{RESULTS_DIR}/{tag}_projection.png"
     )
@@ -194,7 +198,7 @@ def parse_args():
     )
     p.add_argument("--indicator", choices = list(INDICATORS.keys()) + ["all"],
                    default = "temperature",
-                   help = "Which climate indicator to forcast (default: temperature)")
+                   help = "Which climate indicator to forecast (default: temperature)")
     p.add_argument("--all", action = "store_true",
                    help = "Run all three indicators")
     p.add_argument("--pop",  type=int, default=30,
