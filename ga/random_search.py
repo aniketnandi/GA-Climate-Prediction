@@ -18,7 +18,7 @@ class RandomSearch:
         seed: Optional[int] = None,
         verbose: bool = True,
     ):
-        self.series = np.array(series, dtype = float)
+        self.series = np.array(series, dtype=float)
         self.test_size = test_size
         self.n_evals = n_evals
         self.allowed_types = model_types or MODEL_TYPES
@@ -54,12 +54,15 @@ class RandomSearch:
             if best is None or chrom.fitness > best.fitness:
                 best = chrom
                 if self.verbose:
-                    print(f"Eval {i+1:5d} | New best RMSE: {best.rmse:.4f} "
-                          f"({best.model_type})", flush = True)
+                    print(
+                        f"Eval {i+1:5d} | New best RMSE: {best.rmse:.4f} "
+                        f"({best.model_type})",
+                        flush=True,
+                    )
 
         elapsed = time.time() - t0
         if self.verbose:
-            print(f"\nRandom search best:")
+            print("\nRandom search best:")
             print(f"Type : {best.model_type}")
             print(f"RMSE : {best.rmse:.6f}")
             print(f"Hparams : {best.hparams}")

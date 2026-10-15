@@ -1,5 +1,6 @@
 import numpy as np
 import warnings
+
 warnings.filterwarnings("ignore")
 
 _TF_AVAILABLE = False
@@ -7,11 +8,14 @@ try:
     import tensorflow as tf
     from tensorflow import keras
     from tensorflow.keras import layers
+
     tf.get_logger().setLevel("ERROR")
     _TF_AVAILABLE = True
 except ImportError:
-    print("[models] TensorFlow not installed: LSTM candidates use a ridge-regression surrogate "
-          "(pip install -r requirements-full.txt for real LSTMs)")
+    print(
+        "[models] TensorFlow not installed: LSTM candidates use a ridge-regression surrogate "
+        "(pip install -r requirements-full.txt for real LSTMs)"
+    )
 
 
 def _rmse(y_true, y_pred):
@@ -56,7 +60,7 @@ class LSTMModel:
     def _make_sequences(self, series):
         X, y = [], []
         for i in range(self.look_back, len(series)):
-            X.append(series[i - self.look_back:i])
+            X.append(series[i - self.look_back : i])
             y.append(series[i])
         return np.array(X)[..., np.newaxis], np.array(y)
 
@@ -74,7 +78,7 @@ class LSTMModel:
         model = keras.Model(inp, out)
         model.compile(
             optimizer=keras.optimizers.Adam(learning_rate=self.learning_rate),
-            loss="mse"
+            loss="mse",
         )
         return model
 
@@ -84,13 +88,14 @@ class LSTMModel:
         self._scaler_mean = train_series.mean()
         self._scaler_std = train_series.std()
         scaled = self._scale(train_series)
-        self._history_seq = scaled[-self.look_back:].copy()
+        self._history_seq = scaled[-self.look_back :].copy()
 
         if not _TF_AVAILABLE:
             from sklearn.linear_model import Ridge
+
             X, y = [], []
             for i in range(self.look_back, len(scaled)):
-                X.append(scaled[i - self.look_back:i])
+                X.append(scaled[i - self.look_back : i])
                 y.append(scaled[i])
             self._surrogate = Ridge(alpha=1.0).fit(np.array(X), np.array(y))
             return
@@ -102,15 +107,16 @@ class LSTMModel:
 
         self._model = self._build_model()
         cb = keras.callbacks.EarlyStopping(
-            monitor = "val_loss", patience = self.patience, restore_best_weights = True
+            monitor="val_loss", patience=self.patience, restore_best_weights=True
         )
         self._model.fit(
-            X_train, y_train,
-            validation_data = (X_val, y_val),
-            epochs = self.epochs,
-            batch_size = self.batch_size,
-            callbacks = [cb],
-            verbose = 0,
+            X_train,
+            y_train,
+            validation_data=(X_val, y_val),
+            epochs=self.epochs,
+            batch_size=self.batch_size,
+            callbacks=[cb],
+            verbose=0,
         )
 
     def predict(self, steps: int) -> np.ndarray:
@@ -119,10 +125,10 @@ class LSTMModel:
         preds_scaled = []
 
         for _ in range(steps):
-            seq = np.array(history[-self.look_back:])
+            seq = np.array(history[-self.look_back :])
             if _TF_AVAILABLE and self._model is not None:
                 x = seq.reshape(1, self.look_back, 1)
-                yhat = float(self._model.predict(x, verbose = 0)[0, 0])
+                yhat = float(self._model.predict(x, verbose=0)[0, 0])
             else:
                 x = seq.reshape(1, -1)
                 yhat = float(self._surrogate.predict(x)[0])

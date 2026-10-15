@@ -1,6 +1,5 @@
 import random
 import time
-import sys
 import numpy as np
 from typing import List, Optional, Tuple, Dict, Any
 
@@ -9,8 +8,8 @@ from .crossover import type_aware_crossover
 
 # Fitness evaluation
 
-def evaluate_chromosome(chrom: Chromosome, series: np.ndarray,
-                         test_size: int) -> float:
+
+def evaluate_chromosome(chrom: Chromosome, series: np.ndarray, test_size: int) -> float:
     try:
         model = chrom.build_model()
         rmse = model.walk_forward_rmse(series, test_size)
@@ -20,13 +19,17 @@ def evaluate_chromosome(chrom: Chromosome, series: np.ndarray,
         rmse = 1e6
     return chrom.compute_fitness(rmse)
 
+
 # Selection
+
 
 def tournament_select(population: List[Chromosome], k: int = 3) -> Chromosome:
     contestants = random.sample(population, min(k, len(population)))
-    return max(contestants, key = lambda c: c.fitness or 0.0)
+    return max(contestants, key=lambda c: c.fitness or 0.0)
+
 
 # Genetic Algorithm
+
 
 class GeneticAlgorithm:
 
@@ -45,7 +48,7 @@ class GeneticAlgorithm:
         seed: Optional[int] = None,
         verbose: bool = True,
     ):
-        self.series = np.array(series, dtype = float)
+        self.series = np.array(series, dtype=float)
         self.test_size = test_size
         self.pop_size = pop_size
         self.n_generations = n_generations
@@ -85,7 +88,9 @@ class GeneticAlgorithm:
         fitnesses = [c.fitness for c in self.population if c.fitness is not None]
         rmses = [c.rmse for c in self.population if c.rmse is not None]
         best = self._best()
-        type_counts = {t: sum(1 for c in self.population if c.model_type == t) for t in MODEL_TYPES}
+        type_counts = {
+            t: sum(1 for c in self.population if c.model_type == t) for t in MODEL_TYPES
+        }
         entry = {
             "generation": gen,
             "best_fitness": best.fitness,
@@ -99,25 +104,24 @@ class GeneticAlgorithm:
         self.log.append(entry)
 
         if self.verbose:
-            bar = "=" * min(gen + 1, 40)
             print(
                 f"Gen {gen:3d}/{self.n_generations} | "
                 f"Best RMSE: {best.rmse:.4f} ({best.model_type}) | "
                 f"Mean RMSE: {entry['mean_rmse']:.4f} | "
                 f"LR:{type_counts['LR']} AR:{type_counts['ARIMA']} LSTM:{type_counts['LSTM']}",
-                flush = True
+                flush=True,
             )
 
     # Evolution
 
     def _best(self) -> Chromosome:
-        return max(self.population, key = lambda c: c.fitness or 0.0)
+        return max(self.population, key=lambda c: c.fitness or 0.0)
 
     def _next_generation(self):
-        sorted_pop = sorted(self.population,
-                            key = lambda c: c.fitness or 0.0,
-                            reverse = True)
-        new_pop = sorted_pop[:self.elitism_k]
+        sorted_pop = sorted(
+            self.population, key=lambda c: c.fitness or 0.0, reverse=True
+        )
+        new_pop = sorted_pop[: self.elitism_k]
 
         while len(new_pop) < self.pop_size:
             p1 = tournament_select(self.population, self.tournament_k)
@@ -127,6 +131,7 @@ class GeneticAlgorithm:
                 c1, c2 = type_aware_crossover(p1, p2, self.cx_prob)
             else:
                 import copy
+
                 c1, c2 = copy.deepcopy(p1), copy.deepcopy(p2)
                 c1.fitness = c1.rmse = None
                 c2.fitness = c2.rmse = None
@@ -141,7 +146,7 @@ class GeneticAlgorithm:
 
             new_pop.extend([c1, c2])
 
-        self.population = new_pop[:self.pop_size]
+        self.population = new_pop[: self.pop_size]
 
     # Main loop
 
@@ -149,8 +154,10 @@ class GeneticAlgorithm:
         t0 = time.time()
         if self.verbose:
             print(f"\n{'='*60}")
-            print(f"Genetic Algorithm - {self.pop_size} individuals × "
-                  f"{self.n_generations} generations")
+            print(
+                f"Genetic Algorithm - {self.pop_size} individuals × "
+                f"{self.n_generations} generations"
+            )
             print(f"Series length: {len(self.series)} | Test size: {self.test_size}")
             print(f"{'=' * 60}")
 
@@ -165,7 +172,7 @@ class GeneticAlgorithm:
 
         best = self._best()
         if self.verbose:
-            print(f"\nBest configuration found:")
+            print("\nBest configuration found:")
             print(f"Type : {best.model_type}")
             print(f"RMSE : {best.rmse:.6f}")
             print(f"Fitness : {best.fitness:.6f}")
