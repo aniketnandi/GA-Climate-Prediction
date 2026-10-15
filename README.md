@@ -66,20 +66,40 @@ Search spaces:
 
 ## Quick start
 
+Requires Python 3.10+ and an internet connection, because the data is downloaded from NASA and NOAA at run time. Tested on Python 3.13.
+
 ```bash
-pip install -r requirements.txt
+git clone https://github.com/aniketnandi/GA-Climate-Prediction.git
+cd GA-Climate-Prediction
+python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
+pip install -r requirements.txt                     # ~1 min, no TensorFlow
 
-# Single indicator
-python main.py --indicator temperature --pop 10 --gens 10 --seed 42
-
-# Everything (temperature, CO2, four sea-level series)
-python main.py --all --pop 10 --gens 10
-
-# Smoke test (fast)
-python main.py --all --pop 2 --gens 2
+# Smoke test: one series, tiny GA (~20 s on a laptop CPU)
+python main.py --indicator temperature --pop 2 --gens 2 --quiet
 ```
 
-Or step through the notebook, which also contains a GA ablation study:
+You should see RMSEs for the default models, the GA and random search, followed by a ranked comparison. The run writes plots and a JSON summary to `results/`.
+
+**What to expect:**
+- **Runs overwrite figures.** A run replaces the committed figures in `results/` for that series. `git checkout -- results` restores them.
+- **Synthetic fallback.** If a data source can't be reached, the loader prints `WARNING: using synthetic ... data` and continues on a synthetic series.
+- **LSTM without TensorFlow.** The minimal install has no TensorFlow, so LSTM candidates use a ridge-regression surrogate, and a notice is printed at startup. Install the full set for real LSTMs and the notebook (TensorFlow is large):
+
+  ```bash
+  pip install -r requirements-full.txt
+  ```
+
+Larger runs:
+
+```bash
+# Every series (temperature, CO2, four sea-level), tiny GA
+python main.py --all --pop 2 --gens 2 --quiet
+
+# Settings used for the reported results
+python main.py --all --pop 10 --gens 10 --seed 42
+```
+
+To step through the notebook, which also contains a GA ablation study, install `requirements-full.txt` and then run:
 
 ```bash
 jupyter notebook notebooks/climate_forecasting_ga.ipynb
